@@ -41,6 +41,14 @@ git clone https://github.com/zesion21/cupid-skill .claude/skills/create-cupid
 git clone https://github.com/zesion21/cupid-skill ~/.claude/skills/create-cupid
 ```
 
+### OpenClaw
+
+```bash
+
+git clone https://github.com/zesion21/cupid-skill ~/.openclaw/workspace/skills/create-cupid
+
+```
+
 ### 依赖（可选）
 
 ```bash
@@ -69,7 +77,7 @@ pip3 install -r requirements.txt
 
 | 命令                   | 说明                       |
 | ---------------------- | -------------------------- |
-| `/list-cupid`          | 列出所有军师               |
+| `/list-cupid`          | 列出所有丘比特             |
 | `/{slug}`              | 倾诉模式（倾听+分析+建议） |
 | `/{slug}-analyze`      | 仅分析（不给建议）         |
 | `/{slug}-advice`       | 仅建议（不分析）           |
@@ -169,11 +177,9 @@ cupid-skills/
 │   ├── session_logger.py      # 倾听记录管理
 │   ├── version_manager.py     # 版本管理/回滚
 │   └── skill_writer.py        # Skill文件管理
-├── .claude/skills/{slug}/     # 生成的军师（SKILL.md + 所有数据）
+├── .claude/skills/{slug}/     # 生成的丘比特（SKILL.md + 所有数据）
 └── requirements.txt
 ```
-
-> **重要**：所有生成的文件都放在 `.claude/skills/{slug}/` 目录下，包括 SKILL.md、对方画像、会话记录等。这样 `/{slug}` 命令才能被 Claude Code 识别。
 
 ---
 
@@ -184,7 +190,7 @@ cupid-skills/
 - **[同事.skill](https://github.com/titanwings/colleague-skill)**（by titanwings）— 首创"把人蒸馏成 AI Skill"的双层架构
 - **[暗恋对象.skill](https://github.com/xiaoheizi8/crush-skills)**（by xiaoheizi8）— 将双层架构迁移到亲密关系场景
 
-恋爱军师.skill 在此基础上，将视角从"模拟对方"转向"分析对方+给建议"，更适合情感咨询场景。
+丘比特.skill 在此基础上，将视角从"模拟对方"转向"分析对方+给建议"，更适合情感咨询场景。
 
 本项目遵循 [AgentSkills](https://agentskills.io/) 开放标准，兼容 Claude Code 和 OpenClaw。
 
