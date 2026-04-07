@@ -11,7 +11,7 @@ allowed-tools: Read, Write, Edit, Bash
 >
 > 本 Skill 支持中英文。根据用户第一条消息的语言，全程使用同一语言回复。
 
-# 丘比特.skill 创建器（Claude Code 版）
+# 恋爱军师.skill 创建器（Claude Code 版）
 
 ## 触发条件
 
@@ -353,7 +353,9 @@ user-invocable: true
 ```
 ✅ 恋爱军师 Skill 已创建！
 
-目录：.claude/skills/{slug}/
+数据位置：cupid-data/{slug}/
+Skill位置：.claude/skills/{slug}/SKILL.md
+
 触发词：/{slug}（倾诉模式 — 倾听+分析+建议）
         /{slug}-analyze（仅分析）
         /{slug}-advice（仅建议）
@@ -393,7 +395,7 @@ python3 ${CLAUDE_SKILL_DIR}/tools/session_logger.py \
 用户提供新发现或新情况时：
 
 1. 按 Step 2 的方式读取新内容
-2. 用 `Read` 读取现有 `.claude/skills/{slug}/profile.md`
+2. 用 `Read` 读取现有 `cupid-data/{slug}/profile.md`
 3. 参考 `${CLAUDE_SKILL_DIR}/prompts/merger.md` 分析增量
 4. 存档当前版本
 5. 用 `Edit` 更新 profile.md
@@ -419,6 +421,7 @@ python3 ${CLAUDE_SKILL_DIR}/tools/version_manager.py --action rollback --slug {s
 确认后执行：
 
 ```bash
+rm -rf cupid-data/{slug}
 rm -rf .claude/skills/{slug}
 ```
 
@@ -485,8 +488,8 @@ Options:
 
 Generates:
 
-- `.claude/skills/{slug}/profile.md` — Target Profile
-- `.claude/skills/{slug}/sessions/context.md` — User Context
+- `cupid-data/{slug}/profile.md` — Target Profile
+- `cupid-data/{slug}/sessions/context.md` — User Context
 - `.claude/skills/{slug}/SKILL.md` — Full Advisor Skill
 
 ---
