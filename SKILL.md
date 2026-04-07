@@ -11,25 +11,25 @@ allowed-tools: Read, Write, Edit, Bash
 >
 > 本 Skill 支持中英文。根据用户第一条消息的语言，全程使用同一语言回复。
 
-# 恋爱军师.skill 创建器（Claude Code 版）
+# 丘比特.skill 创建器（Claude Code 版）
 
 ## 触发条件
 
 当用户说以下任意内容时启动：
 
-* `/create-cupid`
-* "帮我创建一个恋爱军师"
-* "我想分析一下ta"
-* "帮我看看这个情况"
-* "给我做一个 XX 的军师"
-* "我有个情感问题想咨询"
+- `/create-cupid`
+- "帮我创建一个恋爱军师"
+- "我想分析一下ta"
+- "帮我看看这个情况"
+- "给我做一个 XX 的军师"
+- "我有个情感问题想咨询"
 
 当用户对已有军师 Skill 说以下内容时，进入进化/倾诉模式：
 
-* "我有新的发现" / "追加信息" / "我又想起了什么"
-* "我最近跟ta..." / "上次你说..." / "我还想问"
-* `/update-cupid {slug}`
-* `/{slug}` — 直接倾诉模式
+- "我有新的发现" / "追加信息" / "我又想起了什么"
+- "我最近跟ta..." / "上次你说..." / "我还想问"
+- `/update-cupid {slug}`
+- `/{slug}` — 直接倾诉模式
 
 当用户说 `/list-cupid` 时列出所有已创建的军师。
 
@@ -37,12 +37,12 @@ allowed-tools: Read, Write, Edit, Bash
 
 ## 与 crush.skill 的区别
 
-| 项目 | crush.skill | cupid.skill |
-|------|-------------|-------------|
-| 目标 | 模拟对方，像ta一样聊天 | 分析对方，给用户建议 |
-| 角色 |扮演ta本人 | 扮演军师（第三方视角） |
-| 输出 | 对话模拟 | 倾听+分析+建议 |
-| 数据 | 对方的聊天、社交 | 双方视角：对方信息+用户困惑 |
+| 项目 | crush.skill            | cupid.skill                 |
+| ---- | ---------------------- | --------------------------- |
+| 目标 | 模拟对方，像ta一样聊天 | 分析对方，给用户建议        |
+| 角色 | 扮演ta本人             | 扮演军师（第三方视角）      |
+| 输出 | 对话模拟               | 倾听+分析+建议              |
+| 数据 | 对方的聊天、社交       | 双方视角：对方信息+用户困惑 |
 
 ---
 
@@ -50,19 +50,19 @@ allowed-tools: Read, Write, Edit, Bash
 
 本 Skill 运行在 Claude Code 环境，使用以下工具：
 
-| 任务 | 使用工具 |
-|------|----------|
-| 读取 PDF/图片 | `Read` 工具 |
-| 读取 MD/TXT 文件 | `Read` 工具 |
-| 解析微信聊天记录导出 | `Bash` → `python3 ${CLAUDE_SKILL_DIR}/tools/wechat_parser.py` |
-| 解析 QQ 聊天记录导出 | `Bash` → `python3 ${CLAUDE_SKILL_DIR}/tools/qq_parser.py` |
-| 解析社交媒体内容 | `Bash` → `python3 ${CLAUDE_SKILL_DIR}/tools/social_parser.py` |
-| 分析照片元信息 | `Bash` → `python3 ${CLAUDE_SKILL_DIR}/tools/photo_analyzer.py` |
-| 行为模式分析 | `Bash` → `python3 ${CLAUDE_SKILL_DIR}/tools/behavior_analyzer.py` |
-| 倾听记录管理 | `Bash` → `python3 ${CLAUDE_SKILL_DIR}/tools/session_logger.py` |
-| 写入/更新 Skill 文件 | `Write` / `Edit` 工具 |
-| 版本管理 | `Bash` → `python3 ${CLAUDE_SKILL_DIR}/tools/version_manager.py` |
-| 列出已有 Skill | `Bash` → `python3 ${CLAUDE_SKILL_DIR}/tools/skill_writer.py --action list` |
+| 任务                 | 使用工具                                                                   |
+| -------------------- | -------------------------------------------------------------------------- |
+| 读取 PDF/图片        | `Read` 工具                                                                |
+| 读取 MD/TXT 文件     | `Read` 工具                                                                |
+| 解析微信聊天记录导出 | `Bash` → `python3 ${CLAUDE_SKILL_DIR}/tools/wechat_parser.py`              |
+| 解析 QQ 聊天记录导出 | `Bash` → `python3 ${CLAUDE_SKILL_DIR}/tools/qq_parser.py`                  |
+| 解析社交媒体内容     | `Bash` → `python3 ${CLAUDE_SKILL_DIR}/tools/social_parser.py`              |
+| 分析照片元信息       | `Bash` → `python3 ${CLAUDE_SKILL_DIR}/tools/photo_analyzer.py`             |
+| 行为模式分析         | `Bash` → `python3 ${CLAUDE_SKILL_DIR}/tools/behavior_analyzer.py`          |
+| 倾听记录管理         | `Bash` → `python3 ${CLAUDE_SKILL_DIR}/tools/session_logger.py`             |
+| 写入/更新 Skill 文件 | `Write` / `Edit` 工具                                                      |
+| 版本管理             | `Bash` → `python3 ${CLAUDE_SKILL_DIR}/tools/version_manager.py`            |
+| 列出已有 Skill       | `Bash` → `python3 ${CLAUDE_SKILL_DIR}/tools/skill_writer.py --action list` |
 
 **存储目录**：`.claude/skills/{slug}/`（所有数据都在这个目录下）
 
@@ -90,30 +90,27 @@ allowed-tools: Read, Write, Edit, Bash
 **对方视角（Q1-Q3）**：
 
 1. **花名/代号**（必填）
-   * 不需要真名，昵称、备注名、代号都行
-   * 示例：`小明` / `那个人` / `女神` / `crush`
-   
+   - 不需要真名，昵称、备注名、代号都行
+   - 示例：`小明` / `那个人` / `女神` / `crush`
 2. **ta的基本信息**（一句话：职业、城市、年龄，想到什么写什么）
-   * 示例：`程序员 在北京 28岁`
-   * 示例：`大学生 上海 不知道年龄`
-   
+   - 示例：`程序员 在北京 28岁`
+   - 示例：`大学生 上海 不知道年龄`
 3. **ta的性格画像**（一句话：MBTI、星座、标签、印象）
-   * 示例：`INTJ 摩羯座 高冷 但偶尔会主动找我`
-   * 示例：`ENFP 双子座 话很多 永远在社交`
+   - 示例：`INTJ 摩羯座 高冷 但偶尔会主动找我`
+   - 示例：`ENFP 双子座 话很多 永远在社交`
 
 **用户视角（Q4-Q5）**：
 
 4. **你们的关系状态**（当前处于什么阶段）
-   * 示例：`暗恋三个月了 还没表白`
-   * 示例：`暧昧期 经常聊天但不确定`
-   * 示例：`刚分手两周`
-   * 示例：`相亲认识的 见过两次`
-   
+   - 示例：`暗恋三个月了 还没表白`
+   - 示例：`暧昧期 经常聊天但不确定`
+   - 示例：`刚分手两周`
+   - 示例：`相亲认识的 见过两次`
 5. **你现在的困惑**（最想知道什么，想解决什么）
-   * 示例：`ta到底喜不喜欢我`
-   * 示例：`要不要表白`
-   * 示例：`ta忽冷忽热是怎么回事`
-   * 示例：`分手后还能挽回吗`
+   - 示例：`ta到底喜不喜欢我`
+   - 示例：`要不要表白`
+   - 示例：`ta忽冷忽热是怎么回事`
+   - 示例：`分手后还能挽回吗`
 
 除代号外均可跳过。收集完后汇总确认再进入下一步。
 
@@ -156,10 +153,11 @@ python3 ${CLAUDE_SKILL_DIR}/tools/wechat_parser.py \
 ```
 
 提取维度：
-* 消息节奏（回复速度、主动频率、消息长度）
-* 话题分布（日常/工作/情感/娱乐）
-* 表达风格（语气词、表情包、标点习惯）
-* 关系信号（友善/暧昧/回避/不确定）
+
+- 消息节奏（回复速度、主动频率、消息长度）
+- 话题分布（日常/工作/情感/娱乐）
+- 表达风格（语气词、表情包、标点习惯）
+- 关系信号（友善/暧昧/回避/不确定）
 
 ---
 
@@ -172,9 +170,10 @@ python3 ${CLAUDE_SKILL_DIR}/tools/social_parser.py \
 ```
 
 提取内容：
-* 公开人设 vs 私下性格
-* 分享偏好（音乐/电影/美食/旅行）
-* 情感表达方式
+
+- 公开人设 vs 私下性格
+- 分享偏好（音乐/电影/美食/旅行）
+- 情感表达方式
 
 ---
 
@@ -187,9 +186,10 @@ python3 ${CLAUDE_SKILL_DIR}/tools/photo_analyzer.py \
 ```
 
 提取维度：
-* EXIF 信息：拍摄时间、地点
-* 时间线：关键节点
-* 常去地点：偏好
+
+- EXIF 信息：拍摄时间、地点
+- 时间线：关键节点
+- 常去地点：偏好
 
 ---
 
@@ -218,23 +218,23 @@ python3 ${CLAUDE_SKILL_DIR}/tools/photo_analyzer.py \
 
 **线路 A（Target Profile - 对方画像）**：
 
-* 参考 `${CLAUDE_SKILL_DIR}/prompts/target_analyzer.md` 中的提取维度
-* 提取：行为模式、性格推断、态度模式、关系定位
-* 从聊天记录中识别：回复节奏、主动性、情绪表达
+- 参考 `${CLAUDE_SKILL_DIR}/prompts/target_analyzer.md` 中的提取维度
+- 提取：行为模式、性格推断、态度模式、关系定位
+- 从聊天记录中识别：回复节奏、主动性、情绪表达
 
 **线路 B（User Context - 用户背景）**：
 
-* 参考 `${CLAUDE_SKILL_DIR}/prompts/user_context_builder.md` 中的构建维度
-* 构建：关系时间线、困惑点、期望结果、已尝试行动
-* 记录用户的主观感受和认知
+- 参考 `${CLAUDE_SKILL_DIR}/prompts/user_context_builder.md` 中的构建维度
+- 构建：关系时间线、困惑点、期望结果、已尝试行动
+- 记录用户的主观感受和认知
 
 ### Step 4：军师框架注入
 
 参考 `${CLAUDE_SKILL_DIR}/prompts/advisor_framework.md` 注入分析框架：
 
-* **行为解读方法论**：如何读懂对方的行为信号
-* **建议生成模板**：根据不同场景生成可行建议
-* **军师性格设定**：温和理性、具体可行、不说教
+- **行为解读方法论**：如何读懂对方的行为信号
+- **建议生成模板**：根据不同场景生成可行建议
+- **军师性格设定**：温和理性、具体可行、不说教
 
 ### Step 5：生成并预览
 
@@ -432,19 +432,19 @@ rm -rf .claude/skills/{slug}
 
 Activate when the user says:
 
-* `/create-cupid`
-* "Help me create a love advisor"
-* "I want to analyze them"
-* "Help me understand this situation"
-* "Make an advisor for XX"
-* "I have a relationship question"
+- `/create-cupid`
+- "Help me create a love advisor"
+- "I want to analyze them"
+- "Help me understand this situation"
+- "Make an advisor for XX"
+- "I have a relationship question"
 
 Enter evolution/chat mode when the user says:
 
-* "I found something new" / "append info" / "I remembered something"
-* "Recently with them..." / "You said last time..."
-* `/update-cupid {slug}`
-* `/{slug}` — Direct chat mode
+- "I found something new" / "append info" / "I remembered something"
+- "Recently with them..." / "You said last time..."
+- `/update-cupid {slug}`
+- `/{slug}` — Direct chat mode
 
 List all advisors when the user says `/list-cupid`.
 
@@ -465,28 +465,29 @@ List all advisors when the user says `/list-cupid`.
 ### Step 1: Dual-Perspective Info Collection (5 questions)
 
 **Target's perspective (Q1-Q3)**:
+
 1. Alias/Codename (required)
 2. Basic info (occupation, city, age)
 3. Personality profile (MBTI, zodiac, traits)
 
-**User's perspective (Q4-Q5)**:
-4. Relationship status (crushing/ambiguous/broken up/dating...)
-5. Current confusion (what do you want to know?)
+**User's perspective (Q4-Q5)**: 4. Relationship status (crushing/ambiguous/broken up/dating...) 5. Current confusion (what do you want to know?)
 
 ### Step 2: Source Material Import
 
 Options:
-* **[A] Chat Export** — WeChat/QQ records
-* **[B] Social Media** — Screenshots
-* **[C] Upload Files** — Photos, PDFs, text
-* **[D] Paste/Narrate** — Tell me directly
+
+- **[A] Chat Export** — WeChat/QQ records
+- **[B] Social Media** — Screenshots
+- **[C] Upload Files** — Photos, PDFs, text
+- **[D] Paste/Narrate** — Tell me directly
 
 ### Step 3-6: Analyze → Preview → Write Files
 
 Generates:
-* `.claude/skills/{slug}/profile.md` — Target Profile
-* `.claude/skills/{slug}/sessions/context.md` — User Context
-* `.claude/skills/{slug}/SKILL.md` — Full Advisor Skill
+
+- `.claude/skills/{slug}/profile.md` — Target Profile
+- `.claude/skills/{slug}/sessions/context.md` — User Context
+- `.claude/skills/{slug}/SKILL.md` — Full Advisor Skill
 
 ---
 
@@ -504,11 +505,11 @@ User types `/{slug}` to enter chat mode:
 
 ## Management Commands
 
-| Command | Description |
-|---------|-------------|
-| `/list-cupid` | List all advisors |
-| `/{slug}` | Chat mode (listen + analyze + advise) |
-| `/{slug}-analyze` | Analysis only |
-| `/{slug}-advice` | Advice only |
-| `/cupid-rollback {slug} {version}` | Rollback |
-| `/delete-cupid {slug}` | Delete |
+| Command                            | Description                           |
+| ---------------------------------- | ------------------------------------- |
+| `/list-cupid`                      | List all advisors                     |
+| `/{slug}`                          | Chat mode (listen + analyze + advise) |
+| `/{slug}-analyze`                  | Analysis only                         |
+| `/{slug}-advice`                   | Advice only                           |
+| `/cupid-rollback {slug} {version}` | Rollback                              |
+| `/delete-cupid {slug}`             | Delete                                |
