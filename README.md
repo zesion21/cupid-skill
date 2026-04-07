@@ -35,10 +35,10 @@
 ```bash
 # 安装到当前项目（在 git 仓库根目录执行）
 mkdir -p .claude/skills
-git clone https://github.com/your-repo/cupid-skills .claude/skills/create-cupid
+git clone https://github.com/zesion21/cupid-skill .claude/skills/create-cupid
 
 # 或安装到全局（所有项目都能用）
-git clone https://github.com/your-repo/cupid-skills ~/.claude/skills/create-cupid
+git clone https://github.com/zesion21/cupid-skill ~/.claude/skills/create-cupid
 ```
 
 ### 依赖（可选）
