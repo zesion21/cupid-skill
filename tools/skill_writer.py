@@ -4,7 +4,7 @@
 管理恋爱军师 Skill 的文件操作：列出、创建目录、生成组合 SKILL.md。
 
 Usage:
-    python3 skill_writer.py --action <list|init|combine> --base-dir <path> [--slug <slug>]
+    python3 skill_writer.py --action <list|init|combine> [--slug <slug>]
 """
 
 import argparse
@@ -15,15 +15,23 @@ from pathlib import Path
 from datetime import datetime
 
 
-def list_skills(base_dir: str):
+def get_skill_base_dir():
+    """获取 .claude/skills 目录"""
+    return os.path.join('.claude', 'skills')
+
+
+def list_skills():
     """列出所有军师"""
+    base_dir = get_skill_base_dir()
+
     if not os.path.isdir(base_dir):
         print("还没有创建任何恋爱军师 Skill。")
         return
 
     skills = []
     for slug in sorted(os.listdir(base_dir)):
-        meta_path = os.path.join(base_dir, slug, 'meta.json')
+        skill_dir = os.path.join(base_dir, slug)
+        meta_path = os.path.join(skill_dir, 'meta.json')
         if os.path.exists(meta_path):
             with open(meta_path, 'r', encoding='utf-8') as f:
                 meta = json.load(f)
@@ -64,38 +72,30 @@ def list_skills(base_dir: str):
         print()
 
 
-def init_skill(base_dir: str, slug: str):
+def init_skill(slug: str):
     """初始化军师目录结构"""
-    # targets 目录
-    skill_dir = os.path.join(base_dir, slug)
-    target_dirs = [
+    skill_dir = os.path.join(get_skill_base_dir(), slug)
+
+    dirs = [
+        skill_dir,
         os.path.join(skill_dir, 'versions'),
         os.path.join(skill_dir, 'raw_materials'),
+        os.path.join(skill_dir, 'sessions', 'conversations'),
+        os.path.join(skill_dir, 'sessions', 'analyses'),
+        os.path.join(skill_dir, 'sessions', 'advice_history'),
     ]
-    for d in target_dirs:
+    for d in dirs:
         os.makedirs(d, exist_ok=True)
 
-    # sessions 目录
-    session_dir = os.path.join('sessions', slug)
-    session_dirs = [
-        os.path.join(session_dir, 'conversations'),
-        os.path.join(session_dir, 'analyses'),
-        os.path.join(session_dir, 'advice_history'),
-    ]
-    for d in session_dirs:
-        os.makedirs(d, exist_ok=True)
-
-    print(f"已初始化目录：")
-    print(f"  - {skill_dir}")
-    print(f"  - {session_dir}")
+    print(f"✅ 已初始化目录：{skill_dir}")
 
 
-def combine_skill(base_dir: str, slug: str):
+def combine_skill(slug: str):
     """生成完整的 SKILL.md"""
-    skill_dir = os.path.join(base_dir, slug)
+    skill_dir = os.path.join(get_skill_base_dir(), slug)
     meta_path = os.path.join(skill_dir, 'meta.json')
     profile_path = os.path.join(skill_dir, 'profile.md')
-    context_path = os.path.join('sessions', slug, 'context.md')
+    context_path = os.path.join(skill_dir, 'sessions', 'context.md')
     skill_path = os.path.join(skill_dir, 'SKILL.md')
 
     if not os.path.exists(meta_path):
@@ -150,7 +150,7 @@ def combine_skill(base_dir: str, slug: str):
 """
 
     skill_md = f"""---
-name: cupid-{slug}
+name: {slug}
 description: {description}
 user-invocable: true
 ---
@@ -190,29 +190,29 @@ user-invocable: true
     with open(skill_path, 'w', encoding='utf-8') as f:
         f.write(skill_md)
 
-    print(f"已生成 {skill_path}")
+    print(f"✅ 已生成 Skill：{skill_path}")
+    print(f"   触发词：/{slug}")
 
 
 def main():
     parser = argparse.ArgumentParser(description='Skill 文件管理器')
     parser.add_argument('--action', required=True, choices=['list', 'init', 'combine'])
-    parser.add_argument('--base-dir', default='./targets', help='基础目录')
     parser.add_argument('--slug', help='军师代号')
 
     args = parser.parse_args()
 
     if args.action == 'list':
-        list_skills(args.base_dir)
+        list_skills()
     elif args.action == 'init':
         if not args.slug:
             print("错误：init 需要 --slug 参数", file=sys.stderr)
             sys.exit(1)
-        init_skill(args.base_dir, args.slug)
+        init_skill(args.slug)
     elif args.action == 'combine':
         if not args.slug:
             print("错误：combine 需要 --slug 参数", file=sys.stderr)
             sys.exit(1)
-        combine_skill(args.base_dir, args.slug)
+        combine_skill(args.slug)
 
 
 if __name__ == '__main__':

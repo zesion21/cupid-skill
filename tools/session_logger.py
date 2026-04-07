@@ -4,25 +4,28 @@
 管理用户的倾诉会话记录。
 
 Usage:
-    python3 session_logger.py --action <list|log|get> --slug <slug> [--content "..."] [--analysis "..."] [--advice "..."]
+    python3 session_logger.py --action <list|log|get|init> --slug <slug> [--content "..."] [--analysis "..."] [--advice "..."]
 """
 
 import argparse
 import os
 import sys
-import json
 from datetime import datetime
-from pathlib import Path
+
+
+def get_skill_dir(slug: str) -> str:
+    """获取军师目录"""
+    return os.path.join('.claude', 'skills', slug)
 
 
 def get_session_dir(slug: str) -> str:
     """获取会话目录"""
-    return os.path.join('sessions', slug, 'conversations')
+    return os.path.join(get_skill_dir(slug), 'sessions', 'conversations')
 
 
 def get_context_path(slug: str) -> str:
     """获取用户背景文件路径"""
-    return os.path.join('sessions', slug, 'context.md')
+    return os.path.join(get_skill_dir(slug), 'sessions', 'context.md')
 
 
 def list_sessions(slug: str):
@@ -35,10 +38,10 @@ def list_sessions(slug: str):
 
     sessions = []
     for fname in sorted(os.listdir(session_dir)):
-        if fname.endswith('.md'):
+        if fname.endswith('.md') and fname != 'INDEX.md':
             path = os.path.join(session_dir, fname)
             with open(path, 'r', encoding='utf-8') as f:
-                content = f.read(500)  # 读取前500字符作为预览
+                content = f.read(500)
             sessions.append({
                 'file': fname,
                 'path': path,
@@ -83,19 +86,19 @@ def log_session(slug: str, content: str, analysis: str = '', advice: str = ''):
     # 更新会话索引
     update_session_index(slug, session_id, content[:50] if content else '')
 
-    print(f"会话已记录：{session_file}")
+    print(f"✅ 会话已记录：{session_id}")
 
 
 def update_session_index(slug: str, session_id: str, summary: str):
     """更新会话索引"""
-    index_file = os.path.join(get_session_dir(slug), 'INDEX.md')
+    session_dir = get_session_dir(slug)
+    index_file = os.path.join(session_dir, 'INDEX.md')
 
     entry = f"| {datetime.now().strftime('%Y-%m-%d %H:%M')} | {session_id} | {summary} |\n"
 
     if os.path.exists(index_file):
         with open(index_file, 'r', encoding='utf-8') as f:
             content = f.read()
-        # 在表格最后一行前插入
         if '|----' in content:
             lines = content.split('\n')
             insert_idx = len(lines) - 1
@@ -129,12 +132,13 @@ def get_session(slug: str, session_id: str):
         print(f.read())
 
 
-def update_context(slug: str, updates: dict):
-    """更新用户背景"""
+def init_context(slug: str):
+    """初始化用户背景文件"""
     context_file = get_context_path(slug)
+    context_dir = os.path.dirname(context_file)
+    os.makedirs(context_dir, exist_ok=True)
 
     if not os.path.exists(context_file):
-        # 创建新的背景文件
         content = "# 用户背景\n\n"
         content += "## 关系时间线\n\n"
         content += "## 核心困惑\n\n"
@@ -146,7 +150,7 @@ def update_context(slug: str, updates: dict):
         with open(context_file, 'w', encoding='utf-8') as f:
             f.write(content)
 
-    print(f"用户背景文件：{context_file}")
+    print(f"✅ 用户背景文件：{context_file}")
 
 
 def main():
@@ -173,7 +177,7 @@ def main():
             sys.exit(1)
         get_session(args.slug, args.session_id)
     elif args.action == 'init':
-        update_context(args.slug, {})
+        init_context(args.slug)
 
 
 if __name__ == '__main__':

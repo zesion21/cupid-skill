@@ -64,9 +64,7 @@ allowed-tools: Read, Write, Edit, Bash
 | 版本管理 | `Bash` → `python3 ${CLAUDE_SKILL_DIR}/tools/version_manager.py` |
 | 列出已有 Skill | `Bash` → `python3 ${CLAUDE_SKILL_DIR}/tools/skill_writer.py --action list` |
 
-**基础目录**：
-- 对方画像：`targets/{slug}/`
-- 倾听会话：`sessions/{slug}/`
+**存储目录**：`.claude/skills/{slug}/`（所有数据都在这个目录下）
 
 ---
 
@@ -263,24 +261,26 @@ python3 ${CLAUDE_SKILL_DIR}/tools/photo_analyzer.py \
 
 用户确认后，执行以下写入操作：
 
+**所有文件都放在 `.claude/skills/{slug}/` 目录下**：
+
 **1. 创建目录结构**：
 
 ```bash
-mkdir -p targets/{slug}/versions
-mkdir -p targets/{slug}/raw_materials
-mkdir -p sessions/{slug}/conversations
-mkdir -p sessions/{slug}/analyses
-mkdir -p sessions/{slug}/advice_history
+mkdir -p .claude/skills/{slug}/versions
+mkdir -p .claude/skills/{slug}/raw_materials
+mkdir -p .claude/skills/{slug}/sessions/conversations
+mkdir -p .claude/skills/{slug}/sessions/analyses
+mkdir -p .claude/skills/{slug}/sessions/advice_history
 ```
 
 **2. 写入 profile.md**（对方画像）：
-路径：`targets/{slug}/profile.md`
+路径：`.claude/skills/{slug}/profile.md`
 
 **3. 写入 context.md**（用户背景）：
-路径：`sessions/{slug}/context.md`
+路径：`.claude/skills/{slug}/sessions/context.md`
 
 **4. 写入 meta.json**：
-路径：`targets/{slug}/meta.json`
+路径：`.claude/skills/{slug}/meta.json`
 
 ```json
 {
@@ -305,7 +305,9 @@ mkdir -p sessions/{slug}/advice_history
 ```
 
 **5. 生成完整 SKILL.md**：
-路径：`targets/{slug}/SKILL.md`
+路径：`.claude/skills/{slug}/SKILL.md`
+
+⚠️ **重要**：SKILL.md 必须放在 `.claude/skills/` 目录下，否则 `/{slug}` 命令无法被识别。
 
 SKILL.md 结构：
 
@@ -351,10 +353,12 @@ user-invocable: true
 ```
 ✅ 恋爱军师 Skill 已创建！
 
-文件位置：targets/{slug}/
+目录：.claude/skills/{slug}/
 触发词：/{slug}（倾诉模式 — 倾听+分析+建议）
         /{slug}-analyze（仅分析）
         /{slug}-advice（仅建议）
+
+⚠️ 如果 /{slug} 无法识别，请重启 Claude Code 或新建会话。
 
 有问题随时找我聊聊，我会帮你分析并给出建议。
 ```
@@ -389,7 +393,7 @@ python3 ${CLAUDE_SKILL_DIR}/tools/session_logger.py \
 用户提供新发现或新情况时：
 
 1. 按 Step 2 的方式读取新内容
-2. 用 `Read` 读取现有 `targets/{slug}/profile.md`
+2. 用 `Read` 读取现有 `.claude/skills/{slug}/profile.md`
 3. 参考 `${CLAUDE_SKILL_DIR}/prompts/merger.md` 分析增量
 4. 存档当前版本
 5. 用 `Edit` 更新 profile.md
@@ -402,21 +406,20 @@ python3 ${CLAUDE_SKILL_DIR}/tools/session_logger.py \
 `/list-cupid`：
 
 ```bash
-python3 ${CLAUDE_SKILL_DIR}/tools/skill_writer.py --action list --base-dir ./targets
+python3 ${CLAUDE_SKILL_DIR}/tools/skill_writer.py --action list
 ```
 
 `/cupid-rollback {slug} {version}`：
 
 ```bash
-python3 ${CLAUDE_SKILL_DIR}/tools/version_manager.py --action rollback --slug {slug} --version {version} --base-dir ./targets
+python3 ${CLAUDE_SKILL_DIR}/tools/version_manager.py --action rollback --slug {slug} --version {version}
 ```
 
 `/delete-cupid {slug}`：
 确认后执行：
 
 ```bash
-rm -rf targets/{slug}
-rm -rf sessions/{slug}
+rm -rf .claude/skills/{slug}
 ```
 
 ---
@@ -481,9 +484,9 @@ Options:
 ### Step 3-6: Analyze → Preview → Write Files
 
 Generates:
-* `targets/{slug}/profile.md` — Target Profile
-* `sessions/{slug}/context.md` — User Context
-* `targets/{slug}/SKILL.md` — Full Advisor Skill
+* `.claude/skills/{slug}/profile.md` — Target Profile
+* `.claude/skills/{slug}/sessions/context.md` — User Context
+* `.claude/skills/{slug}/SKILL.md` — Full Advisor Skill
 
 ---
 

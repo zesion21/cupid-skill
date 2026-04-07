@@ -1,8 +1,5 @@
-# 生成的对方画像
-targets/
-
-# 倾听会话记录
-sessions/
+# 生成的军师 Skill 和数据
+.claude/
 
 # Python
 __pycache__/
@@ -24,7 +21,6 @@ env/
 .vscode/
 *.swp
 *.swo
-.claude
 
 # 系统文件
 .DS_Store

@@ -2,7 +2,7 @@
 """版本存档与回滚管理器
 
 Usage:
-    python3 version_manager.py --action <backup|rollback|list> --slug <slug> --base-dir <path> [--version <v>]
+    python3 version_manager.py --action <backup|rollback|list> --slug <slug> [--version <v>]
 """
 
 import argparse
@@ -13,11 +13,17 @@ import json
 from datetime import datetime
 
 
-def backup(base_dir: str, slug: str):
+def get_skill_dir(slug: str) -> str:
+    """获取军师目录"""
+    return os.path.join('.claude', 'skills', slug)
+
+
+def backup(slug: str):
     """备份当前版本"""
-    skill_dir = os.path.join(base_dir, slug)
+    skill_dir = get_skill_dir(slug)
     versions_dir = os.path.join(skill_dir, 'versions')
     meta_path = os.path.join(skill_dir, 'meta.json')
+    skill_path = os.path.join(skill_dir, 'SKILL.md')
 
     if not os.path.exists(meta_path):
         print(f"错误：meta.json 不存在", file=sys.stderr)
@@ -33,18 +39,27 @@ def backup(base_dir: str, slug: str):
 
     os.makedirs(backup_dir, exist_ok=True)
 
-    for fname in ['profile.md', 'context.md', 'SKILL.md', 'meta.json']:
+    # 备份所有关键文件
+    files_to_backup = [
+        'profile.md',
+        'meta.json',
+        'SKILL.md',
+        os.path.join('sessions', 'context.md')
+    ]
+
+    for fname in files_to_backup:
         src = os.path.join(skill_dir, fname)
         if os.path.exists(src):
-            shutil.copy2(src, os.path.join(backup_dir, fname))
+            dst = os.path.join(backup_dir, os.path.basename(fname))
+            shutil.copy2(src, dst)
 
-    print(f"已备份版本 {backup_name} 到 {backup_dir}")
+    print(f"✅ 已备份版本 {backup_name}")
     return backup_name
 
 
-def rollback(base_dir: str, slug: str, version: str):
+def rollback(slug: str, version: str):
     """回滚到指定版本"""
-    skill_dir = os.path.join(base_dir, slug)
+    skill_dir = get_skill_dir(slug)
     versions_dir = os.path.join(skill_dir, 'versions')
 
     target_dir = None
@@ -55,25 +70,33 @@ def rollback(base_dir: str, slug: str, version: str):
 
     if not target_dir or not os.path.isdir(target_dir):
         print(f"错误：找不到版本 {version}", file=sys.stderr)
-        list_versions(base_dir, slug)
+        list_versions(slug)
         sys.exit(1)
 
     # 先备份当前版本
-    backup(base_dir, slug)
+    backup(slug)
 
-    # 恢复目标版本
-    for fname in ['profile.md', 'context.md', 'SKILL.md', 'meta.json']:
-        src = os.path.join(target_dir, fname)
-        dst = os.path.join(skill_dir, fname)
+    # 恢复文件
+    files_to_restore = [
+        ('profile.md', 'profile.md'),
+        ('meta.json', 'meta.json'),
+        ('SKILL.md', 'SKILL.md'),
+        ('context.md', os.path.join('sessions', 'context.md'))
+    ]
+
+    for src_name, dst_name in files_to_restore:
+        src = os.path.join(target_dir, src_name)
+        dst = os.path.join(skill_dir, dst_name)
         if os.path.exists(src):
+            os.makedirs(os.path.dirname(dst), exist_ok=True)
             shutil.copy2(src, dst)
 
-    print(f"已回滚到版本 {version}")
+    print(f"✅ 已回滚到版本 {version}")
 
 
-def list_versions(base_dir: str, slug: str):
+def list_versions(slug: str):
     """列出所有历史版本"""
-    versions_dir = os.path.join(base_dir, slug, 'versions')
+    versions_dir = os.path.join(get_skill_dir(slug), 'versions')
 
     if not os.path.isdir(versions_dir):
         print("没有历史版本。")
@@ -93,20 +116,19 @@ def main():
     parser = argparse.ArgumentParser(description='版本管理器')
     parser.add_argument('--action', required=True, choices=['backup', 'rollback', 'list'])
     parser.add_argument('--slug', required=True, help='军师代号')
-    parser.add_argument('--base-dir', default='./targets', help='基础目录')
     parser.add_argument('--version', help='回滚目标版本')
 
     args = parser.parse_args()
 
     if args.action == 'backup':
-        backup(args.base_dir, args.slug)
+        backup(args.slug)
     elif args.action == 'rollback':
         if not args.version:
             print("错误：rollback 需要 --version 参数", file=sys.stderr)
             sys.exit(1)
-        rollback(args.base_dir, args.slug, args.version)
+        rollback(args.slug, args.version)
     elif args.action == 'list':
-        list_versions(args.base_dir, args.slug)
+        list_versions(args.slug)
 
 
 if __name__ == '__main__':

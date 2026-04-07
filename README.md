@@ -150,7 +150,7 @@ pip3 install -r requirements.txt
 
 ```
 cupid-skills/
-├── SKILL.md                    # 主技能文件
+├── SKILL.md                    # 主技能文件（创建器）
 ├── README.md                   # 项目说明
 ├── prompts/
 │   ├── intake.md              # 双视角信息录入
@@ -168,11 +168,12 @@ cupid-skills/
 │   ├── behavior_analyzer.py   # 行为模式分析
 │   ├── session_logger.py      # 倾听记录管理
 │   ├── version_manager.py     # 版本管理/回滚
-│   └ skill_writer.py          # Skill文件管理
-├── targets/                   # 生成的对方画像（gitignored）
-├── sessions/                  # 倾听会话记录（gitignored）
+│   └── skill_writer.py        # Skill文件管理
+├── .claude/skills/{slug}/     # 生成的军师（SKILL.md + 所有数据）
 └── requirements.txt
 ```
+
+> **重要**：所有生成的文件都放在 `.claude/skills/{slug}/` 目录下，包括 SKILL.md、对方画像、会话记录等。这样 `/{slug}` 命令才能被 Claude Code 识别。
 
 ---
 
