@@ -2,7 +2,7 @@
 
 # 恋爱军师.skill
 
-> _"帮所有的爱都值得被看见，所有的犹豫都值得被理解。"_
+> _"所有的爱都值得被看见，所有的犹豫都值得被理解。"_
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.9+](https://img.shields.io/badge/Python-3.9%2B-blue.svg)](https://python.org)
