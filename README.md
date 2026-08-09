@@ -1,3 +1,5 @@
+
+
 <div align="center">
 
 # 丘比特.skill
@@ -163,7 +165,7 @@ cupid-skills/
 ├── prompts/
 │   ├── intake.md              # 双视角信息录入
 │   ├── target_analyzer.md     # 对方行为分析器
-│   ├── user_context_builder.md# 用户背景构建器
+│   ├── user_context_builder.md    # 用户背景构建器
 │   ├── advisor_framework.md   # 军师分析框架
 │   ├── listener.md            # 倾听记录模板
 │   ├── merger.md              # 增量合并逻辑
